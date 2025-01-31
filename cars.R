@@ -1,17 +1,20 @@
-install.packages("rvest")
+# Load rvest
 library(rvest)
-car_wiki <- read_html("https://en.wikipedia.org/wiki/Comma-separated_values")
-car_tables <- car_wiki %>%
-  html_nodes(xpath = '//*[@id="mw-content-text"]/div[1]/pre[1]') %>%
-  html_text()
-car_tables
-car_table <- car_tables[1]
-write.table(car_table,"C:/Users/
-            Jacqueline Lim/Working Directory for Python/
-            repositories/st2195_assignment_2/r_csv/cars.csv", 
-            quote =FALSE, 
-            col.names=FALSE, 
-            row.names = FALSE)
-cars_data <- read.csv("cars.csv")
-print(cars_data)
 
+# Wikipedia page URL
+url <- "https://en.wikipedia.org/wiki/Comma-separated_values"
+
+# Read the page content
+page <- read_html(url)
+
+# Find and extract the cars table
+cars_table <- page %>% 
+  html_node(xpath = '//*[@id="mw-content-text"]/div[1]/table[2]') %>% 
+  html_table()
+
+# Save as CSV
+write.csv(cars_table, "r_csv/cars.csv", row.names = FALSE)
+
+# Read CSV to verify
+cars_data <- read.csv("r_csv/cars.csv")
+print(cars_data)
